@@ -66,7 +66,7 @@ class Hangman:
     def mostrar_palabra_oculta(self, palabra):
         resultado = ""
 
-        # Añadir espacio para mejor visualización
+        # Mejor visual
         for letra in palabra:
             resultado += "_ "
 
@@ -87,12 +87,12 @@ class Hangman:
             if letra in letras_acertadas:
                 resultado += letra + " "
             else:
-                # Añadir espacio para mejor visualización
+                # MODIFICADO
                 resultado += "_ "
 
         print("Palabra:", resultado.strip())
 
-    # Ahora recibe max_intentos para escalar el dibujo
+    # Ahora escalado según dificultad
     def dibujar_ahorcado(self, intentos, max_intentos):
         estados = [
             """
@@ -169,8 +169,9 @@ class Hangman:
             """
         ]
 
-        # Cálculo proporcional del dibujo según dificultad
         total_estados = len(estados) - 1
+
+        # Escalado proporcional
         indice = int(intentos * total_estados / max_intentos)
 
         print(estados[indice])

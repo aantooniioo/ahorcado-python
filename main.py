@@ -1,5 +1,7 @@
 from hangman import Hangman
-import random  # Necesario para pistas
+import random
+import uuid
+from datetime import datetime
 
 def main():
     print("Bienvenidos al juego del Ahorcado")
@@ -21,7 +23,12 @@ def main():
     usuario = input("Introduce tu nombre: ")
     print(f"Hola {usuario}, comienza la partida!")
 
-    # Selección de dificultad
+    # Datos de partida
+    game_id = str(uuid.uuid4())
+    start_date = datetime.now()
+    puntuacion = 0
+
+    # Dificultad
     print("\nSelecciona dificultad:")
     print("1. Facil (9 intentos)")
     print("2. Normal (7 intentos)")
@@ -41,14 +48,11 @@ def main():
 
     # Palabras usadas
     palabras_usadas = []
-
-    # Número de rondas
     rondas = 3
 
     for ronda in range(1, rondas + 1):
         print(f"\n--- Ronda {ronda} ---")
 
-        # Seleccionar palabra sin repetir
         while True:
             palabra = juego.get_random_word()
             if palabra not in palabras_usadas:
@@ -57,34 +61,27 @@ def main():
 
         print("Se ha seleccionado una palabra al azar")
 
-        # Mostrar palabra inicial
         juego.mostrar_palabra_oculta(palabra)
 
-        # Lista de letras acertadas
         letras_acertadas = []
-
-        # Letras falladas
         letras_falladas = []
-
-        # Contador de intentos
         intentos = 0
 
         while True:
-            # Opción de pista
             letra = input("Introduce una letra o 'pista': ").lower().strip()
 
-            # Sistema de pistas
+            # PISTA
             if letra == "pista":
                 if pistas_restantes > 0:
                     pistas_restantes -= 1
 
-                    letras_no_descubiertas = []
+                    letras_no = []
                     for l in palabra:
                         if l not in letras_acertadas:
-                            letras_no_descubiertas.append(l)
+                            letras_no.append(l)
 
-                    if len(letras_no_descubiertas) > 0:
-                        pista = random.choice(letras_no_descubiertas)
+                    if len(letras_no) > 0:
+                        pista = random.choice(letras_no)
                         print("Pista:", pista)
 
                     print("Pistas restantes:", pistas_restantes)
@@ -92,17 +89,14 @@ def main():
                     print("No tienes pistas")
                 continue
 
-            # Validar que solo se introduce una letra
             if len(letra) != 1:
                 print("Introduce solo una letra")
                 continue
 
-            # Evitar repetir también letras falladas
             if letra in letras_acertadas or letra in letras_falladas:
                 print("Ya has usado esa letra")
                 continue
 
-            # Comprobar letra
             acierto = juego.comprobar_letra(palabra, letra)
 
             if acierto:
@@ -112,20 +106,14 @@ def main():
                 letras_falladas.append(letra)
 
                 print(f"Intentos fallidos: {intentos}/{max_intentos}")
-
-                # Mostrar intentos restantes
                 print(f"Intentos restantes: {max_intentos - intentos}")
 
-                # Pasar max_intentos al dibujo
                 juego.dibujar_ahorcado(intentos, max_intentos)
 
-            # Mostrar progreso actualizado
             juego.mostrar_progreso(palabra, letras_acertadas)
-
-            # Mostrar letras falladas
             print("Letras falladas:", " ".join(letras_falladas))
 
-            # Comprobar si se ha ganado
+            # Victoria
             ganado = True
             for l in palabra:
                 if l not in letras_acertadas:
@@ -134,12 +122,27 @@ def main():
 
             if ganado:
                 print("¡Has ganado esta ronda!")
+                puntuacion += 1
+            else:
+                if intentos >= max_intentos:
+                    print("Has perdido esta ronda. La palabra era:", palabra)
+
+            # Guardar ronda
+            round_id = str(uuid.uuid4())
+            with open("data/rounds_in_games.csv", "a", encoding="utf-8") as f:
+                f.write(f"{game_id},{palabra},{usuario},{round_id},{intentos},{ganado}\n")
+
+            if ganado or intentos >= max_intentos:
                 break
 
-            # Comprobar si se ha perdido
-            if intentos >= max_intentos:
-                print("Has perdido esta ronda. La palabra era:", palabra)
-                break
+    # Fin de partida
+    end_date = datetime.now()
+
+    print(f"\nPartida finalizada. Tu puntuación es: {puntuacion}/3. Gracias por jugar, {usuario}.")
+
+    # Guardar partida
+    with open("data/games.csv", "a", encoding="utf-8") as f:
+        f.write(f"{game_id},{usuario},{start_date},{end_date},{puntuacion}\n")
 
 
 if __name__ == "__main__":

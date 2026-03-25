@@ -1,1 +1,1 @@
-id_partida,usuario,fecha,puntuacion_total
+game_id, username,start_date,end_date,final_score
