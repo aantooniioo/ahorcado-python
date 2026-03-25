@@ -1,3 +1,5 @@
+from hangman import Ahorcado
+
 def main():
     print("Bienvenidos al juego del Ahorcado")
 
