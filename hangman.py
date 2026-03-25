@@ -16,7 +16,7 @@ class Hangman:
         for linea in archivo:
             palabra = linea.strip()
 
-            # animación
+            # animación (puntitos)
             print(".", end="", flush=True)
             time.sleep(0.05)
 
@@ -24,7 +24,7 @@ class Hangman:
             if palabra == "":
                 continue
 
-            # evitar palabras cortas
+            # evitar palabras con menos de 5 letras
             if len(palabra) < 5:
                 continue
 
@@ -62,3 +62,11 @@ class Hangman:
 
     def get_random_word(self):
         return random.choice(self.words)
+    
+    def mostrar_palabra_oculta(self, palabra):
+        resultado = ""
+
+        for letra in palabra:
+            resultado += "_"
+
+        print("Palabra:", resultado.strip())

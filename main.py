@@ -11,9 +11,9 @@ def main():
 
     # Validación
     if juego.get_number_of_words() == 30:
-        print("Palabras listas, ¡adelante!")
+        print("\nPalabras listas, ¡adelante!")
     else:
-        print("Vaya, parece que no encontramos todas las palabras necesarias, no podemos dar comienzo al juego.")
+        print("\nVaya, parece que no encontramos todas las palabras necesarias, no podemos dar comienzo al juego.")
         return
 
     # Pedir nombre
@@ -25,6 +25,9 @@ def main():
     palabra = juego.get_random_word()
 
     print("Se ha seleccionado una palabra al azar")
+
+    # Mostrar palabra oculta
+    juego.mostrar_palabra_oculta(palabra)
 
 
 if __name__ == "__main__":
