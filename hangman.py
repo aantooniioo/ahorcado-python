@@ -8,7 +8,7 @@ class Hangman:
     def load(self, filename):
         archivo = open(filename, "r", encoding="utf-8")
 
-        # saltar cabecera
+        # Saltar cabecera
         archivo.readline()
 
         print("Cargando palabras", end="")
@@ -16,19 +16,19 @@ class Hangman:
         for linea in archivo:
             palabra = linea.strip()
 
-            # animación (puntitos)
+            # Animación (puntitos)
             print(".", end="", flush=True)
             time.sleep(0.05)
 
-            # evitar palabras vacías
+            # Evitar palabras vacías
             if palabra == "":
                 continue
 
-            # evitar palabras con menos de 5 letras
+            # Evitar palabras con menos de 5 letras
             if len(palabra) < 5:
                 continue
 
-            # evitar duplicados
+            # Evitar duplicados
             if palabra in self.words:
                 continue
 
@@ -66,8 +66,9 @@ class Hangman:
     def mostrar_palabra_oculta(self, palabra):
         resultado = ""
 
+        # Añadir espacio para mejor visualización
         for letra in palabra:
-            resultado += "_"
+            resultado += "_ "
 
         print("Palabra:", resultado.strip())
 
@@ -86,11 +87,13 @@ class Hangman:
             if letra in letras_acertadas:
                 resultado += letra + " "
             else:
-                resultado += "_"
+                # Añadir espacio para mejor visualización
+                resultado += "_ "
 
         print("Palabra:", resultado.strip())
 
-    def dibujar_ahorcado(self, intentos):
+    # Ahora recibe max_intentos para escalar el dibujo
+    def dibujar_ahorcado(self, intentos, max_intentos):
         estados = [
             """
             
@@ -166,4 +169,8 @@ class Hangman:
             """
         ]
 
-        print(estados[intentos])
+        # Cálculo proporcional del dibujo según dificultad
+        total_estados = len(estados) - 1
+        indice = int(intentos * total_estados / max_intentos)
+
+        print(estados[indice])
