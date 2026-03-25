@@ -2,8 +2,8 @@ class Hangman():
     def __init__(self):
         self.words = []
 
-    def load_words(self, ruta):
-        archivo = open(ruta, "r")
+    def load(self, filename):
+        archivo = open(filename, "r", encoding="utf-8")
 
         # saltar la cabecera
         archivo.readline()
@@ -13,3 +13,6 @@ class Hangman():
             self.words.append(palabra)
 
         archivo.close()
+
+    def get_number_of_words(self):
+        return len(self.words)
