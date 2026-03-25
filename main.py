@@ -29,11 +29,21 @@ def main():
     # Mostrar palabra oculta
     juego.mostrar_palabra_oculta(palabra)
 
+    # Lista de letras acertadas
+    letras_acertadas = []
+
     # Pedir letra
     letra = input("Introduce una letra: ")
 
     # Comprobar letra
-    juego.comprobar_letra(palabra, letra)
+    acierto = juego.comprobar_letra(palabra, letra)
+
+    # Si acierta, guardamos la letra
+    if acierto:
+        letras_acertadas.append(letra)
+
+    # Mostrar progreso actualizado
+    juego.mostrar_progreso(palabra, letras_acertadas)
 
 
 if __name__ == "__main__":

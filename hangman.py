@@ -78,3 +78,14 @@ class Hangman:
         else:
             print("Fallaste")
             return False
+        
+    def mostrar_progreso(self, palabra, letras_acertadas):
+        resultado = ""
+
+        for letra in palabra:
+            if letra in letras_acertadas:
+                resultado += letra + " "
+            else:
+                resultado += "_"
+
+        print("Palabra:", resultado.strip())
