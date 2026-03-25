@@ -18,67 +18,82 @@ def main():
 
     # Pedir nombre
     usuario = input("Introduce tu nombre: ")
-
     print(f"Hola {usuario}, comienza la partida!")
 
-    # Seleccionar palabra
-    palabra = juego.get_random_word()
+    # Palabras usadas
+    palabras_usadas = []
 
-    print("Se ha seleccionado una palabra al azar")
+    # Numero de rondas
+    rondas = 3
 
-    # Mostrar palabra inicial
-    juego.mostrar_palabra_oculta(palabra)
+    for ronda in range(1, rondas + 1):
+        print(f"\n--- Ronda {ronda} ---")
 
-    # Lista de letras acertadas
-    letras_acertadas = []
-
-    # Contador de intentos
-    intentos = 0
-
-    # Limite de intentos
-    max_intentos = 6
-
-    while True:
-        # Pedir letra
-        letra = input("Introduce una letra: ").lower().strip()
-
-        # Validar que solo se introduce una letra
-        if len(letra) != 1:
-            print("Introduce solo una letra")
-            continue
-
-        # Evitar repetir letras
-        if letra in letras_acertadas:
-            print("Ya has acertado esa letra")
-            continue
-
-        # Comprobar letra
-        acierto = juego.comprobar_letra(palabra, letra)
-
-        if acierto:
-            letras_acertadas.append(letra)
-        else:
-            intentos += 1
-            print(f"Intentos fallidos: {intentos}/{max_intentos}")
-
-        # Mostrar progreso actualizado
-        juego.mostrar_progreso(palabra, letras_acertadas)
-
-        # Comprobar si se ha ganado
-        ganado = True
-        for l in palabra:
-            if l not in letras_acertadas:
-                ganado = False
+        # Seleccionar palabra sin repetir
+        while True:
+            palabra = juego.get_random_word()
+            if palabra not in palabras_usadas:
+                palabras_usadas.append(palabra)
                 break
 
-        if ganado:
-            print("¡Has ganado!")
-            break
+        print("Se ha seleccionado una palabra al azar")
 
-        # Comprobar si se ha perdido
-        if intentos >= max_intentos:
-            print("Has perdido. La palabra era:", palabra)
-            break
+        # Mostrar palabra inicial
+        juego.mostrar_palabra_oculta(palabra)
+
+        # Lista de letras acertadas
+        letras_acertadas = []
+
+        # Contador de intentos
+        intentos = 0
+
+        # Limite de intentos
+        max_intentos = 9
+
+        while True:
+            # Pedir letra
+            letra = input("Introduce una letra: ").lower().strip()
+
+            # Validar que solo se introduce una letra
+            if len(letra) != 1:
+                print("Introduce solo una letra")
+                continue
+
+            # Evitar repetir letras
+            if letra in letras_acertadas:
+                print("Ya has acertado esa letra")
+                continue
+
+            # Comprobar letra
+            acierto = juego.comprobar_letra(palabra, letra)
+
+            if acierto:
+                letras_acertadas.append(letra)
+            else:
+                intentos += 1
+                print(f"Intentos fallidos: {intentos}/{max_intentos}")
+
+                # Dibujo del ahorcado
+                juego.dibujar_ahorcado(intentos)
+
+            # Mostrar progreso actualizado
+            juego.mostrar_progreso(palabra, letras_acertadas)
+
+            # Comprobar si se ha ganado
+            ganado = True
+            for l in palabra:
+                if l not in letras_acertadas:
+                    ganado = False
+                    break
+
+            if ganado:
+                print("¡Has ganado esta ronda!")
+                break
+
+            # Comprobar si se ha perdido
+            if intentos >= max_intentos:
+                print("Has perdido esta ronda. La palabra era:", palabra)
+                break
 
 
 if __name__ == "__main__":
