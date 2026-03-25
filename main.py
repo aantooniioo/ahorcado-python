@@ -26,24 +26,59 @@ def main():
 
     print("Se ha seleccionado una palabra al azar")
 
-    # Mostrar palabra oculta
+    # Mostrar palabra inicial
     juego.mostrar_palabra_oculta(palabra)
 
     # Lista de letras acertadas
     letras_acertadas = []
 
-    # Pedir letra
-    letra = input("Introduce una letra: ")
+    # Contador de intentos
+    intentos = 0
 
-    # Comprobar letra
-    acierto = juego.comprobar_letra(palabra, letra)
+    # Limite de intentos
+    max_intentos = 6
 
-    # Si acierta, guardamos la letra
-    if acierto:
-        letras_acertadas.append(letra)
+    while True:
+        # Pedir letra
+        letra = input("Introduce una letra: ").lower().strip()
 
-    # Mostrar progreso actualizado
-    juego.mostrar_progreso(palabra, letras_acertadas)
+        # Validar que solo se introduce una letra
+        if len(letra) != 1:
+            print("Introduce solo una letra")
+            continue
+
+        # Evitar repetir letras
+        if letra in letras_acertadas:
+            print("Ya has acertado esa letra")
+            continue
+
+        # Comprobar letra
+        acierto = juego.comprobar_letra(palabra, letra)
+
+        if acierto:
+            letras_acertadas.append(letra)
+        else:
+            intentos += 1
+            print(f"Intentos fallidos: {intentos}/{max_intentos}")
+
+        # Mostrar progreso actualizado
+        juego.mostrar_progreso(palabra, letras_acertadas)
+
+        # Comprobar si se ha ganado
+        ganado = True
+        for l in palabra:
+            if l not in letras_acertadas:
+                ganado = False
+                break
+
+        if ganado:
+            print("¡Has ganado!")
+            break
+
+        # Comprobar si se ha perdido
+        if intentos >= max_intentos:
+            print("Has perdido. La palabra era:", palabra)
+            break
 
 
 if __name__ == "__main__":
