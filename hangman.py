@@ -1,8 +1,8 @@
 class Hangman():
     def __init__(self):
-        self.palabras = []
+        self.words = []
 
-    def cargar_palabras(self, ruta):
+    def load_words(self, ruta):
         archivo = open(ruta, "r")
 
         # saltar la cabecera
@@ -10,6 +10,6 @@ class Hangman():
 
         for linea in archivo:
             palabra = linea.strip()
-            self.palabras.append(palabra)
+            self.words.append(palabra)
 
         archivo.close()
