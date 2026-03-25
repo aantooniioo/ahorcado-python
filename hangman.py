@@ -1,4 +1,5 @@
 import time
+import random
 
 class Hangman:
     def __init__(self):
@@ -15,7 +16,7 @@ class Hangman:
         for linea in archivo:
             palabra = linea.strip()
 
-            # animación (puntitos)
+            # animación
             print(".", end="", flush=True)
             time.sleep(0.05)
 
@@ -23,7 +24,7 @@ class Hangman:
             if palabra == "":
                 continue
 
-            # evitar palabras con menos de 5 letras
+            # evitar palabras cortas
             if len(palabra) < 5:
                 continue
 
@@ -58,3 +59,6 @@ class Hangman:
         print("Numero total:", len(self.words))
         print("Longitud media:", round(media, 2))
         print("Palabra mas larga:", palabra_mas_larga)
+
+    def get_random_word(self):
+        return random.choice(self.words)
