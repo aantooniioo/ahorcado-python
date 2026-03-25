@@ -9,9 +9,14 @@ def main():
     # Cargamos las palabras desde el CSV
     juego.load("data/words.csv")
 
+    # Mostrar resumen
+    juego.resumen_palabras()
+
     # Validación mínima
-    if juego.get_number_of_words() < 30:
-        print("Error: se necesitan al menos 30 palabras para jugar")
+    if juego.get_number_of_words() == 30:
+        print("\nPalabras listas, ¡adelante!")
+    else:
+        print("\nVaya, parece que no encontramos todas las palabras necesarias, no podemos dar comienzo al juego.")
         return
 
     # Mostrar número de palabras
