@@ -70,3 +70,11 @@ class Hangman:
             resultado += "_"
 
         print("Palabra:", resultado.strip())
+
+    def comprobar_letra(self,palabra, letra):
+        if letra in palabra:
+            print("¡Correcto!")
+            return True
+        else:
+            print("Fallaste")
+            return False

@@ -29,6 +29,12 @@ def main():
     # Mostrar palabra oculta
     juego.mostrar_palabra_oculta(palabra)
 
+    # Pedir letra
+    letra = input("Introduce una letra: ")
+
+    # Comprobar letra
+    juego.comprobar_letra(palabra, letra)
+
 
 if __name__ == "__main__":
     main()
