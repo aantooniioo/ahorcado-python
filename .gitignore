@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 .env
+data/games.csv
+data/rounds_in_games.csv
