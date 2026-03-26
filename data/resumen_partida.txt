@@ -1,0 +1,8 @@
+RESUMEN DE PARTIDA
+-------------------
+Jugador: Maria
+Puntuación: 3/3
+Medalla: Excelente
+Rondas ganadas: 3
+Rondas perdidas: 0
+Intentos totales: 5
