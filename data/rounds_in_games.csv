@@ -1,0 +1,10 @@
+game_id,word,username,round_id,user_trys,victory
+3aad38e8-4098-4c64-9977-3bbfe144b145,desarrollo,Antonio,3f29b979-1489-44ec-a8f2-98626a89d2ca,5,True
+3aad38e8-4098-4c64-9977-3bbfe144b145,archivo,Antonio,49d99a2b-ccc2-43c6-98e6-94693ef39d0d,2,True
+3aad38e8-4098-4c64-9977-3bbfe144b145,cliente,Antonio,0bb3618e-f170-40fc-954b-f3622bfbe60b,2,True
+31216e95-2cbd-44fa-bcd6-fed7ee3f336f,hardware,Carmen,05c7d43d-af38-46d1-82ee-93af173549c5,1,True
+31216e95-2cbd-44fa-bcd6-fed7ee3f336f,condicional,Carmen,b71a8d71-e381-4c55-8007-f118b6fc64d6,0,True
+31216e95-2cbd-44fa-bcd6-fed7ee3f336f,proceso,Carmen,3e6a1f8c-a337-48dc-8819-ed63a536d3c8,2,True
+7ace17ae-5cb5-4797-ada3-582b3d2cbd2f,hardware,Maria,a98b9fdb-cea9-4cf4-b0a8-22b50e211867,1,True
+7ace17ae-5cb5-4797-ada3-582b3d2cbd2f,cliente,Maria,0212c9be-2182-4600-aaef-8e7c43e0e1a5,1,True
+7ace17ae-5cb5-4797-ada3-582b3d2cbd2f,ordenador,Maria,c0caf0cf-f078-4bd4-b2d3-5d2fc9c56969,3,True
