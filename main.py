@@ -28,6 +28,11 @@ def main():
     start_date = datetime.now()
     puntuacion = 0
 
+    # Estadísticas inicializadas correctamente
+    total_intentos = 0
+    total_aciertos = 0
+    total_fallos = 0
+
     # Dificultad
     print("\nSelecciona dificultad:")
     print("1. Facil (9 intentos)")
@@ -38,13 +43,10 @@ def main():
 
     if opcion == "1":
         max_intentos = 9
-        pistas_restantes = 999
     elif opcion == "2":
         max_intentos = 7
-        pistas_restantes = 2
     else:
         max_intentos = 5
-        pistas_restantes = 0
 
     # Palabras usadas
     palabras_usadas = []
@@ -52,6 +54,13 @@ def main():
 
     for ronda in range(1, rondas + 1):
         print(f"\n--- Ronda {ronda} ---")
+        # Reiniciar pistas en cada ronda
+        if opcion == "1":
+            pistas_restantes = 999
+        elif opcion == "2":
+            pistas_restantes = 2
+        else:
+            pistas_restantes = 0
 
         while True:
             palabra = juego.get_random_word()
@@ -127,12 +136,20 @@ def main():
                 if intentos >= max_intentos:
                     print("Has perdido esta ronda. La palabra era:", palabra)
 
-            # Guardar ronda
-            round_id = str(uuid.uuid4())
-            with open("data/rounds_in_games.csv", "a", encoding="utf-8") as f:
-                f.write(f"{game_id},{palabra},{usuario},{round_id},{intentos},{ganado}\n")
-
+            # Acumular estadísticas
             if ganado or intentos >= max_intentos:
+                total_intentos += intentos
+
+                if ganado:
+                    total_aciertos += 1
+                else:
+                    total_fallos += 1
+
+                # Guardar ronda
+                round_id = str(uuid.uuid4())
+                with open("data/rounds_in_games.csv", "a", encoding="utf-8") as f:
+                    f.write(f"{game_id},{palabra},{usuario},{round_id},{intentos},{ganado}\n")
+
                 break
 
     # Fin de partida
@@ -140,9 +157,38 @@ def main():
 
     print(f"\nPartida finalizada. Tu puntuación es: {puntuacion}/3. Gracias por jugar, {usuario}.")
 
+    # Medalla según puntuación
+    if puntuacion == 3:
+        medalla = "Excelente"
+    elif puntuacion == 2:
+        medalla = "Muy bien"
+    elif puntuacion == 1:
+        medalla = "Puedes mejorar"
+    else:
+        medalla = "Sigue practicando"
+
+    print("Resultado:", medalla)
+
+    # Resumen de la partida
+    print("\nResumen de la partida:")
+    print("Rondas ganadas:", total_aciertos)
+    print("Rondas perdidas:", total_fallos)
+    print("Intentos totales:", total_intentos)
+
     # Guardar partida
     with open("data/games.csv", "a", encoding="utf-8") as f:
         f.write(f"{game_id},{usuario},{start_date},{end_date},{puntuacion}\n")
+
+    # Generar archivo txt con resumen
+    with open("data/resumen_partida.txt", "w", encoding="utf-8") as f:
+        f.write("RESUMEN DE PARTIDA\n")
+        f.write("-------------------\n")
+        f.write(f"Jugador: {usuario}\n")
+        f.write(f"Puntuación: {puntuacion}/3\n")
+        f.write(f"Medalla: {medalla}\n")
+        f.write(f"Rondas ganadas: {total_aciertos}\n")
+        f.write(f"Rondas perdidas: {total_fallos}\n")
+        f.write(f"Intentos totales: {total_intentos}\n")
 
 
 if __name__ == "__main__":

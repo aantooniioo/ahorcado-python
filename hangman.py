@@ -87,12 +87,12 @@ class Hangman:
             if letra in letras_acertadas:
                 resultado += letra + " "
             else:
-                # MODIFICADO
+                # Mejor visual
                 resultado += "_ "
 
         print("Palabra:", resultado.strip())
 
-    # Ahora escalado según dificultad
+    # Escalado según dificultad
     def dibujar_ahorcado(self, intentos, max_intentos):
         estados = [
             """
@@ -172,6 +172,6 @@ class Hangman:
         total_estados = len(estados) - 1
 
         # Escalado proporcional
-        indice = int(intentos * total_estados / max_intentos)
+        indice = max(1, int(intentos * total_estados / max_intentos))
 
         print(estados[indice])
