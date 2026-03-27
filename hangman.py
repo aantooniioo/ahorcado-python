@@ -1,14 +1,40 @@
+"""
+Clase Hangman.
+
+Se encarga de:
+- Cargar palabras desde un CSV
+- Gestionar la lógica del juego
+- Mostrar progreso de la palabra
+- Dibujar el ahorcado
+"""
+
 import time
 import random
+from typing import List
+
+from config import LOAD_DELAY, HANGMAN_STATES
+
 
 class Hangman:
-    def __init__(self):
-        self.words = []
+    def __init__(self) -> None:
+        """
+        Inicializa la clase Hangman.
+        """
+        self.words: List[str] = []
+        self.load_delay: float = LOAD_DELAY
+        self.estados: List[str] = HANGMAN_STATES
 
-    def load(self, filename):
+    def load(self, filename: str) -> None:
+        """
+        Carga palabras desde un archivo CSV.
+
+        Filtra:
+        - Palabras vacías
+        - Palabras con menos de 5 letras
+        - Palabras duplicadas
+        """
         archivo = open(filename, "r", encoding="utf-8")
 
-        # Saltar cabecera
         archivo.readline()
 
         print("Cargando palabras", end="")
@@ -16,19 +42,15 @@ class Hangman:
         for linea in archivo:
             palabra = linea.strip()
 
-            # Animación (puntitos)
             print(".", end="", flush=True)
-            time.sleep(0.05)
+            time.sleep(self.load_delay)
 
-            # Evitar palabras vacías
             if palabra == "":
                 continue
 
-            # Evitar palabras con menos de 5 letras
             if len(palabra) < 5:
                 continue
 
-            # Evitar duplicados
             if palabra in self.words:
                 continue
 
@@ -37,10 +59,16 @@ class Hangman:
         archivo.close()
         print("\nCarga completada")
 
-    def get_number_of_words(self):
+    def get_number_of_words(self) -> int:
+        """
+        Devuelve el número de palabras cargadas.
+        """
         return len(self.words)
 
-    def resumen_palabras(self):
+    def resumen_palabras(self) -> None:
+        """
+        Muestra estadísticas de las palabras cargadas.
+        """
         if len(self.words) == 0:
             return
 
@@ -60,118 +88,54 @@ class Hangman:
         print("Longitud media:", round(media, 2))
         print("Palabra mas larga:", palabra_mas_larga)
 
-    def get_random_word(self):
+    def get_random_word(self) -> str:
+        """
+        Devuelve una palabra aleatoria.
+        """
         return random.choice(self.words)
-    
-    def mostrar_palabra_oculta(self, palabra):
+
+    def mostrar_palabra_oculta(self, palabra: str) -> None:
+        """
+        Muestra la palabra oculta.
+        """
         resultado = ""
 
-        # Mejor visual
-        for letra in palabra:
+        for _ in palabra:
             resultado += "_ "
 
         print("Palabra:", resultado.strip())
 
-    def comprobar_letra(self,palabra, letra):
+    def comprobar_letra(self, palabra: str, letra: str) -> bool:
+        """
+        Comprueba si una letra está en la palabra.
+        """
         if letra in palabra:
             print("¡Correcto!")
             return True
         else:
             print("Fallaste")
             return False
-        
-    def mostrar_progreso(self, palabra, letras_acertadas):
+
+    def mostrar_progreso(self, palabra: str, letras_acertadas: List[str]) -> None:
+        """
+        Muestra el progreso de la palabra.
+        """
         resultado = ""
 
         for letra in palabra:
             if letra in letras_acertadas:
                 resultado += letra + " "
             else:
-                # Mejor visual
                 resultado += "_ "
 
         print("Palabra:", resultado.strip())
 
-    # Escalado según dificultad
-    def dibujar_ahorcado(self, intentos, max_intentos):
-        estados = [
-            """
-            
-            
-            
-            
-            -----
-            """,
-            """
-            |
-            |
-            |
-            |
-            -----
-            """,
-            """
-            ---------
-            |
-            |
-            |
-            -----
-            """,
-            """
-            ---------
-            |       |
-            |
-            |
-            -----
-            """,
-            """
-            ---------
-            |       |
-            |       O
-            |
-            -----
-            """,
-            """
-            ---------
-            |       |
-            |       O
-            |       |
-            -----
-            """,
-            """
-            ---------
-            |       |
-            |       O
-            |      \\|
-            -----
-            """,
-            """
-            ---------
-            |       |
-            |       O
-            |      \\|/
-            -----
-            """,
-            """
-            ---------
-            |       |
-            |       O
-            |      \\|/
-            |      /
-            -----
-            """,
-            """
-            ---------
-            |       |
-            |       O
-            |      \\|/
-            |      / \\
-            -----
-            """
-        ]
+    def dibujar_ahorcado(self, intentos: int, max_intentos: int) -> None:
+        """
+        Dibuja el estado del ahorcado.
+        """
+        total_estados = len(self.estados) - 1
 
-        total_estados = len(estados) - 1
-
-        # Escalado proporcional
         indice = max(1, int(intentos * total_estados / max_intentos))
 
-        print(estados[indice])
+        print(self.estados[indice])
